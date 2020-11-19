@@ -35,12 +35,12 @@ public class ServicioBibliotecario {
             throw new PrestamoException(EL_LIBRO_NO_SE_PUEDE_PRESTAR);
         }
         // Reglas #4 y #5
-        Prestamo prestamo = Obtenerprestamo(comandoLibro, nombreUsuario);
+        Prestamo prestamo = obtenerprestamo(comandoLibro, nombreUsuario);
         this.repositorioPrestamo.agregar(prestamo);
         return prestamo;
         }
 
-    public Prestamo Obtenerprestamo (ComandoLibro comandoLibro, String nombreUsuario ){
+    public Prestamo obtenerprestamo (ComandoLibro comandoLibro, String nombreUsuario ){
         Libro libro = this.fabricaLibro.crearLibro(comandoLibro);
 
         Date fechaEntregaMaxima = new Date();
@@ -95,6 +95,10 @@ public class ServicioBibliotecario {
             }
         }
         return bError;
+    }
+
+    public boolean isNumeric(String s) {
+        return s != null && s.matches("[-+]?\\d*\\.?\\d+");
     }
 
     public boolean esPrestado(String isbn) {
