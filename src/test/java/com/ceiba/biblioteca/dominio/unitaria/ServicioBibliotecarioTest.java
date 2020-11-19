@@ -94,11 +94,12 @@ public class ServicioBibliotecarioTest {
         RepositorioPrestamo repositorioPrestamo = mock(RepositorioPrestamo.class);
         RepositorioLibro repositorioLibro = mock(RepositorioLibro.class);
         String nombreUsuario = "nombreFake";
-        ComandoLibro comandoLibro = new ComandoLibro("isbn12Fake5", "tituloFake", 2020);
+
+        Libro libro = new LibroTestDataBuilder().build();
         ServicioBibliotecario servicioBibliotecario = new ServicioBibliotecario(repositorioLibro, repositorioPrestamo);
 
         // act
-        Prestamo prestamo = servicioBibliotecario.obtenerprestamo(comandoLibro, nombreUsuario);
+        Prestamo prestamo = servicioBibliotecario.obtenerprestamo(libro, nombreUsuario);
 
         // assert
         assertNull(prestamo.getFechaEntregaMaxima());
@@ -109,11 +110,11 @@ public class ServicioBibliotecarioTest {
         RepositorioPrestamo repositorioPrestamo = mock(RepositorioPrestamo.class);
         RepositorioLibro repositorioLibro = mock(RepositorioLibro.class);
         String nombreUsuario = "nombreFake";
-        ComandoLibro comandoLibro = new ComandoLibro("i89546961569879876549799879sbn12Fake5", "tituloFake", 2020);
+        Libro libro = new LibroTestDataBuilder().buildMayor30();
         ServicioBibliotecario servicioBibliotecario = new ServicioBibliotecario(repositorioLibro, repositorioPrestamo);
 
         // act
-        Prestamo prestamo = servicioBibliotecario.obtenerprestamo(comandoLibro, nombreUsuario);
+        Prestamo prestamo = servicioBibliotecario.obtenerprestamo(libro, nombreUsuario);
 
         // assert
         assertNotNull(prestamo.getFechaEntregaMaxima());
@@ -152,13 +153,14 @@ public class ServicioBibliotecarioTest {
         RepositorioPrestamo repositorioPrestamo = mock(RepositorioPrestamo.class);
         RepositorioLibro repositorioLibro = mock(RepositorioLibro.class);
 
-        String isbn = "";
+        String isbn = "fakeIsbn";
         String nombreUsuario = "";
-        ComandoLibro comandoLibro = new ComandoLibro("A151A", "tituloFake", 2020);
+        Libro libro = new LibroTestDataBuilder().buildPalindromo();
         ServicioBibliotecario servicioBibliotecario = new ServicioBibliotecario(repositorioLibro, repositorioPrestamo);
+        when(repositorioLibro.obtenerPorIsbn(isbn)).thenReturn(libro);
 
         //act
-        servicioBibliotecario.prestar(isbn, nombreUsuario, comandoLibro);
+        servicioBibliotecario.prestar(isbn, nombreUsuario);
     }
 
     @Test
@@ -166,13 +168,14 @@ public class ServicioBibliotecarioTest {
         RepositorioPrestamo repositorioPrestamo = mock(RepositorioPrestamo.class);
         RepositorioLibro repositorioLibro = mock(RepositorioLibro.class);
 
-        String isbn = "";
+        String isbn = "fakeIsbn";
         String nombreUsuario = "";
-        ComandoLibro comandoLibro = new ComandoLibro("Aw151ddA", "tituloFake", 2020);
+        Libro libro = new LibroTestDataBuilder().build();
         ServicioBibliotecario servicioBibliotecario = new ServicioBibliotecario(repositorioLibro, repositorioPrestamo);
+        when(repositorioLibro.obtenerPorIsbn(isbn)).thenReturn(libro);
 
         //act
-        Prestamo prestamo = servicioBibliotecario.prestar(isbn, nombreUsuario, comandoLibro);
+        Prestamo prestamo = servicioBibliotecario.prestar(isbn, nombreUsuario);
         assertNull(prestamo.getFechaEntregaMaxima());
     }
 
@@ -181,13 +184,14 @@ public class ServicioBibliotecarioTest {
         RepositorioPrestamo repositorioPrestamo = mock(RepositorioPrestamo.class);
         RepositorioLibro repositorioLibro = mock(RepositorioLibro.class);
 
-        String isbn = "";
+        String isbn = "fakeIsbn";
         String nombreUsuario = "";
-        ComandoLibro comandoLibro = new ComandoLibro("Aw151dd78979849874687989879A", "tituloFake", 2020);
+        Libro libro = new LibroTestDataBuilder().buildMayor30();
+        when(repositorioLibro.obtenerPorIsbn(isbn)).thenReturn(libro);
         ServicioBibliotecario servicioBibliotecario = new ServicioBibliotecario(repositorioLibro, repositorioPrestamo);
 
         //act
-        Prestamo prestamo = servicioBibliotecario.prestar(isbn, nombreUsuario, comandoLibro);
+        Prestamo prestamo = servicioBibliotecario.prestar(isbn, nombreUsuario);
         assertNotNull(prestamo.getFechaEntregaMaxima());
     }
 }

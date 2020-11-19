@@ -21,27 +21,27 @@ public class ServicioBibliotecario {
 
     private final RepositorioLibro repositorioLibro;
     private final RepositorioPrestamo repositorioPrestamo;
-    private final FabricaLibro fabricaLibro;
 
     public ServicioBibliotecario(RepositorioLibro repositorioLibro, RepositorioPrestamo repositorioPrestamo) {
         this.repositorioLibro = repositorioLibro;
         this.repositorioPrestamo = repositorioPrestamo;
-        this.fabricaLibro = new FabricaLibro();
     }
 
-    public Prestamo prestar(String isbn, String nombreUsuario, ComandoLibro comandoLibro) {
+    public Prestamo prestar(String isbn, String nombreUsuario) {
+
+        Libro libro = repositorioLibro.obtenerPorIsbn(isbn);
+
         // Regla #3
-        if(!palabraPalindroma(comandoLibro.getIsbn())){
+        if(!palabraPalindroma(libro.getIsbn())){
             throw new PrestamoException(EL_LIBRO_NO_SE_PUEDE_PRESTAR);
         }
         // Reglas #4 y #5
-        Prestamo prestamo = obtenerprestamo(comandoLibro, nombreUsuario);
+        Prestamo prestamo = obtenerprestamo(libro, nombreUsuario);
         this.repositorioPrestamo.agregar(prestamo);
         return prestamo;
         }
 
-    public Prestamo obtenerprestamo (ComandoLibro comandoLibro, String nombreUsuario ){
-        Libro libro = this.fabricaLibro.crearLibro(comandoLibro);
+    public Prestamo obtenerprestamo (Libro libro, String nombreUsuario ){
 
         Date fechaEntregaMaxima = new Date();
         Calendar calendar = Calendar.getInstance();

@@ -22,8 +22,8 @@ public class ControladorPrestamo {
     }
 
     @PostMapping("/{isbn}/{nombreUsuario}")
-    public Prestamo prestar(@PathVariable(name = "isbn") String isbn, @PathVariable(name = "nombreUsuario") String nombreUsuario, @RequestBody ComandoLibro comandoLibro) {
-        return this.manejadorGenerarPrestamo.ejecutar(isbn, nombreUsuario, comandoLibro);
+    public Prestamo prestar(@PathVariable(name = "isbn") String isbn, @PathVariable(name = "nombreUsuario") String nombreUsuario) {
+        return this.manejadorGenerarPrestamo.ejecutar(isbn, nombreUsuario);
     }
 
     @GetMapping("/{isbn}")

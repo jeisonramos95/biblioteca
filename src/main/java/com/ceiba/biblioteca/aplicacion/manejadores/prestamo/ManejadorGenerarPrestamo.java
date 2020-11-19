@@ -16,7 +16,7 @@ public class ManejadorGenerarPrestamo {
     }
 
     @Transactional
-    public Prestamo ejecutar(String isbn, String nombreUsuario, ComandoLibro comandoLibro) {
-        return this.servicioBibliotecario.prestar( isbn,  nombreUsuario, comandoLibro);
+    public Prestamo ejecutar(String isbn, String nombreUsuario) {
+        return this.servicioBibliotecario.prestar( isbn,  nombreUsuario);
     }
 }
