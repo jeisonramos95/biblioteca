@@ -12,6 +12,8 @@ import org.springframework.context.annotation.ScopeMetadata;
 import java.util.Calendar;
 import java.util.Date;
 
+import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;
+
 public class ServicioBibliotecario {
 
     public static final String EL_LIBRO_NO_SE_ENCUENTRA_DISPONIBLE = "El libro no se encuentra disponible";
@@ -29,7 +31,7 @@ public class ServicioBibliotecario {
 
     public Prestamo prestar(String isbn, String nombreUsuario, ComandoLibro comandoLibro) {
         // Regla #3
-        if(PalabraPalindroma(comandoLibro.getIsbn())){
+        if(!palabraPalindroma(comandoLibro.getIsbn())){
             throw new PrestamoException(EL_LIBRO_NO_SE_PUEDE_PRESTAR);
         }
         // Reglas #4 y #5
@@ -38,22 +40,25 @@ public class ServicioBibliotecario {
         return prestamo;
         }
 
-    public  Prestamo Obtenerprestamo (ComandoLibro comandoLibro, String nombreUsuario ){
+    public Prestamo Obtenerprestamo (ComandoLibro comandoLibro, String nombreUsuario ){
         Libro libro = this.fabricaLibro.crearLibro(comandoLibro);
 
         Date fechaEntregaMaxima = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        String cadena= libro.getIsbn();  //guarda la cadena
-        int largo=cadena.length(), sum=0;  //guarda largo de cadena
+        String cadena = libro.getIsbn();
+        String[] arrayString = cadena.split("");
+        int  sum = 0;
 
-        for(int i=0; i<largo; i++){  //recorre la cadena
-            if (Character.isDigit(cadena.charAt(i))){  //si el caracter es digito
-                int sum1 = cadena.charAt(i) - 48 ;
-                sum = sum + sum1;
+        for(int i=0; i < arrayString.length; i++){
+            //si el caracter es digito
+            if(isNumeric(arrayString[i])) {
+                int partial = Integer.parseInt(arrayString[i]);
+                sum += partial;
             }
         }
-        if( sum > 30){
+
+        if(sum > 30){
             int day = 0;
             int count = 1;
             while(count < 15){
@@ -75,7 +80,7 @@ public class ServicioBibliotecario {
         Prestamo prestamo = new Prestamo(new Date (), libro,  fechaEntregaMaxima,  nombreUsuario);
         return prestamo;
     }
-    public boolean PalabraPalindroma(String isbn){
+    public boolean palabraPalindroma(String isbn){
         int inc = 0;
         int des = isbn.length()-1;
         boolean bError = false;

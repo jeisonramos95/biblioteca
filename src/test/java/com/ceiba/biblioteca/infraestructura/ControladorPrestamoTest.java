@@ -33,11 +33,10 @@ public class ControladorPrestamoTest {
     public void generarPrestamoLibro() throws Exception {
         ComandoLibro comandoLibro = new LibroTestDataBuilder().buildComando();
         mvc.perform(MockMvcRequestBuilders
-                .post("/prestamos/{isbn}/{nombreCliente}", ISBN_LIBRO_PD5121, NOMBRE_CLIENTE_PEDRO)
+                .post("/prestamos/{isbn}/{nombreUsuario}", ISBN_LIBRO_PD5121, NOMBRE_CLIENTE_PEDRO)
                 .content(objectMapper.writeValueAsString(comandoLibro))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-
     }
 }
